@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<!-- 
+Template Name: BRILLIANT Bootstrap Admin Template
+Version: 4.5.6
+Author: WebThemez
+Website: http://www.webthemez.com/ 
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <title>Admin</title>
+    <!-- Bootstrap Styles-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+        <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' /> -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>
+
+
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><strong>Admin Panel</strong></a>
+                <div id="sideNav" href="">
+        <i class="fa fa-bars icon"></i> 
+        </div>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+               
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        
+                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+
+                    <li>
+                        <a href="createform" class="active-menu"><i class="fa fa-dashboard"></i>ADD FORMS</a>
+                    </li>
+                    <li>
+                        <a href="viewall" ><i class="fa fa-desktop"></i>VIEW FORMS</a>
+                    </li>
+                     
+                        
+                    <li>
+                        <a href="responses"><i class="fa fa-qrcode"></i>RESPONSES</a>
+                    </li>
+                    
+                   
+
+
+                   
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div class="header"> 
+                       
+                       <br><br><h1><b>Create Form</b></h1>
+                                    
+            </div>
+            <div id="page-inner"> 
+                 
+                
+                <div class="row">
+
+                    <div class="col-md-3"> </div>
+                    <div class="col-md-6">
+                        
+
+                            <div ng-app="myApp" ng-controller="myCtrl">
+
+                                <div class="form-group form-inline">
+                                    <label for="No of Fields">No of Fields:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input type="text" class="form-control" ng-model="fields" ng-change="myFunction()" placeholder="Enter no. of fields"  >
+                                </div>
+
+                                <div class="form-group form-inline">
+                                    <label for="No of FileUploads">No of FileUploads:</label>
+                                    <input type="text" class="form-control" ng-model="files" ng-change="myFunction()" placeholder="Enter no. of FileUploads"  >
+                                </div>
+
+                               
+                                
+                                <p ng-bind-html="abc"></p>
+
+                            </div>
+                
+                        
+                    </div> 
+                    <div class="col-md-3"> </div>                     
+                </div>                              
+                                    
+                  
+            </div>
+        </div>
+                    
+    </div>
+               
+
+    <script>
+
+        var app = angular.module('myApp', ['ngSanitize']);
+        app.controller('myCtrl', function($scope, $sce) {
+
+
+            var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  $scope.users = this.responseText;
+                  
+                }
+              };
+              xhttp.open("GET", "allusers", false);
+              xhttp.send();
+              $scope.users = angular.fromJson($scope.users);
+              console.log($scope.users);
+
+
+
+
+            $scope.myFunction = function() {
+
+
+                var inputs = "<form action='createform' method='POST'><div class='form-group form-inline'><label for='title'>Title:</label><input type='text' class='form-control' name='title'><br><label for='dbtitle'>Database Table Name:</label><input type='text' class='form-control' name='dbtablename'><br>"; 
+                var j =0;
+                for (var i=1; i<=$scope.fields.toString(); i++) {
+                     inputs += "<br><br><label for='Field No.'>Field "+i+":<br> Name:</label><input type='text' class='form-control' name='name["+i+"]'>&nbsp;&nbsp;&nbsp;<label for='field type'>Type:</label><select class='form-control' name='type["+i+"]'><option value='text'>Text</option><option value='number'>Numbers</option><option value='date'>Date</option></select><br><label for='DB Field'>DB Field "+i+":<br> DB-field-Name:</label><input type='text' class='form-control' name='dbname["+i+"]'>";
+                }
+                if($scope.files){
+                    for (var i=1; i<=$scope.files.toString(); i++) {
+                         inputs += "<br><br><label for='File No.'>File "+i+":<br> Name:</label><input type='text' class='form-control' name='f["+i+"]'><br><label for='DB Field'>DB Field "+i+":<br> DB-field-Name:</label><input type='text' class='form-control' name='dbfname["+i+"]'>";
+                    }
+                }
+                inputs+="<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type='submit' class='btn btn-danger'>Create Form</button></div></form>";
+
+                //console.log(angular.isNumber($scope.fields.toString()));
+
+
+                if($scope.fields < 1 ){
+                    inputs = "";
+                }
+
+                $scope.abc= $sce.trustAsHtml(inputs);
+            }
+
+            
+
+        });
+    
+
+
+</script>             
+   
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+      <!-- Custom Js -->
+    
+</body>
+</html>

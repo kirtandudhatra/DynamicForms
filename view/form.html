@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang='en'>
+   <head>
+      <title>abcd2 - Registration Form</title>
+      <meta charset='utf-8'>
+      <meta name='viewport' content='width=device- width, initial-scale=1'>
+      <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+      <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+   </head>
+   <body style='background-color: #f46e42'>
+      <div class='row' style='margin: 50px' ng-app="myApp" ng-controller="myCtrl">
+         <div class='col-sm-4'></div>
+         <div class='col-sm-4' style='background-color: #fff; padding: 50px;'>
+            <center>
+               <h2>{{mytitle}}</h2>
+            </center>
+            <form class='form' method='POST' action='submitform' enctype = 'multipart/form-data'>
+               <div ng-repeat="(key,value) in fields.text">
+                  <label for='{{value[0]}}'>{{value[0]}}</label>
+                  <input type='{{value[1]}}' class='form-control' name='{{key}}'><br>
+               </div>
+               <div ng-repeat="(key,value) in fields.file">
+                  <label for='{{value}}'>{{value}}</label>
+                  <input type='file' class='form-control' name='{{key}}'><br>
+               </div>
+               <input type='hidden' name='title' value='{{mytitle}}'><input type='hidden' name='status' value='not approved'>
+               <center>
+               <button type='submit' class='btn btn-danger'>submit</button>
+               <center>
+            </form>
+         </div>
+         <div class='col-sm-4'></div>
+      </div>
+   </body>
+   <script type="text/javascript">
+      var app = angular.module('myApp', []).config(['$locationProvider', function($locationProvider) { $locationProvider.html5Mode({ enabled: true, requireBase: false }); }]);
+        app.controller('myCtrl', function($scope, $http, $location) {
+          var title = $location.search().title;
+            $scope.mytitle = title;
+          var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  var res = JSON.parse(this.responseText); 
+                  $scope.fields = JSON.parse(res[0].inputs);
+                  $scope.mytitle = res[0].table_name;              
+                }
+              };
+              xhttp.open("GET", "getformdetails?title="+title, false);
+              xhttp.send();
+        });
+   </script>
+</html>
